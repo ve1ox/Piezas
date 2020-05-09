@@ -15,13 +15,21 @@
  * dropped in column 2 should take [1,2].
 **/
 
-
 /**
  * Constructor sets an empty board (default 3 rows, 4 columns) and 
  * specifies it is X's turn first
 **/
 Piezas::Piezas()
 {
+	for(int i = 0; i < BOARD_ROWS; i++)
+	{
+		for(int j = 0; j < BOARD_COLS; j++)
+		{
+			board[i][j] = Blank;
+		}
+	}
+	
+	turn = X;
 }
 
 /**
@@ -30,6 +38,13 @@ Piezas::Piezas()
 **/
 void Piezas::reset()
 {
+	for(int i = 0; i < BOARD_ROWS; i++)
+	{
+		for(int j = 0; j < BOARD_COLS; j++)
+		{
+			board[i][j] = Blank;
+		}
+	}
 }
 
 /**
@@ -42,7 +57,32 @@ void Piezas::reset()
 **/ 
 Piece Piezas::dropPiece(int column)
 {
-    return Blank;
+    if(column < 0 || column > BOARD_COLS)
+	{
+		if(turn == X)
+			turn = O;
+		else
+			turn = X;
+		
+		return Invalid;
+	}
+	
+	for(int i = 0; i < BOARD_ROWS; i++)
+	{
+		if(board[i][column] == Blank)
+		{
+			board[i][column] = turn;
+			
+			if(turn == X)
+				turn = O;
+			else
+				turn = X;
+			
+			return board[i][column];
+		}
+	}
+	
+	return Blank;
 }
 
 /**
@@ -51,7 +91,10 @@ Piece Piezas::dropPiece(int column)
 **/
 Piece Piezas::pieceAt(int row, int column)
 {
-    return Blank;
+    if((row < 0 || row > BOARD_ROWS) || (column < 0 || column > BOARD_COLS))
+		return Invalid;
+	else
+		return board[row][column];
 }
 
 /**
@@ -65,5 +108,17 @@ Piece Piezas::pieceAt(int row, int column)
 **/
 Piece Piezas::gameState()
 {
+	for(int i = 0; i < BOARD_ROWS; i++)
+	{
+		for(int j = 0; j < BOARD_COLS; j++)
+		{
+			if(board[i][j] == Blank)
+				return Invalid;
+		}
+	}
+	
+	int xAdj, oAdj = 0;
+	
+	
     return Blank;
 }
